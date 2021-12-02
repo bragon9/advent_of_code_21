@@ -10,6 +10,9 @@ def count_increases(nums_arr: List[int], window_size: int = 1) -> int:
     """Takes a list of numbers a subarray size, and returns the number of times
     that a sliding window is larger than the previous window sum."""
 
+    if len(nums_arr) <= 1:
+        return 0
+
     if window_size >= len(nums_arr):
         raise ValueError('Window size must be less than array length.')
 
