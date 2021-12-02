@@ -2,12 +2,16 @@ from typing import List
 
 def get_input(file_location: str):
     """Pass in a file path and it will read lines into integers."""
+
     with open(f'{file_location}') as input_file:
         return[int(x) for x in input_file]
 
 def count_increases(nums_arr: List[int], window_size: int = 1) -> int:
     """Takes a list of numbers a subarray size, and returns the number of times
     that a sliding window is larger than the previous window sum."""
+
+    if window_size >= len(nums_arr):
+        raise ValueError('Window size must be less than array length.')
 
     increases = 0
 
