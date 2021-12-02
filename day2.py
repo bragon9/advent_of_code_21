@@ -44,7 +44,7 @@ class Submarine:
         self.y += amount
 
 class SubmarineMk2(Submarine):
-    """New version of submarinee with updated movement capability."""
+    """New version of submarine with updated movement capability."""
 
     def __init__(self):
         super().__init__()
