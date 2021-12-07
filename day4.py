@@ -64,17 +64,29 @@ class Bingo:
     def add_board(self, board: Board) -> None:
         self.boards.append(board)
 
-    def play(self) -> None:
+    def play(self, let_squid_win: bool = False) -> None:
         """Play through the move list one at a time and play that number on
         all of the boards.  Print out the score and stop play when
         there is a winner."""
 
+        has_not_won = set([board_num for board_num in range(len(self.boards))])
+
         for move in self.moves:
             for board_num, board in enumerate(self.boards):
+
+                # If throwing, skip boards that already won.
+                if let_squid_win and board_num not in has_not_won:
+                    continue
 
                 winner = board.play_number(move)
 
                 if winner is True:
+
+                    has_not_won.remove(board_num)
+
+                    if let_squid_win and has_not_won:
+                        continue
+
                     score = board.score()
                     print(
                         f'Winner! Board #{board_num+1} with a score of '
@@ -113,4 +125,4 @@ def initialize_bingo_game(text_input: List[str]) -> Bingo:
 if __name__ == '__main__':
     INPUT = get_input('./inputs/day4.txt')
     game = initialize_bingo_game(INPUT)
-    game.play()
+    game.play(True)
