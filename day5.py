@@ -21,21 +21,37 @@ def build_overlap_chart(INPUT: List[str]) -> Dict[Tuple[int, int], int]:
         x1, y1 = [int(x) for x in start.split(',')]
         x2, y2 = [int(x) for x in stop.split(',')]
 
+        x_min, x_max = min(x1, x2), max(x1, x2)
+        y_min, y_max = min(y1, y2), max(y1, y2)
+
         # Vertical.
         if x1 == x2:
-            y_min, y_max = min(y1, y2), max(y1, y2)
             for i in range(y_min, y_max+1):
                 coords = tuple([x1, i])
                 overlap_dict[coords] += 1
         # horizontal
         elif y1 == y2:
-            x_min, x_max = min(x1, x2), max(x1, x2)
             for i in range(x_min, x_max+1):
                 coords = tuple([i, y1])
                 overlap_dict[coords] += 1
-        # Only count straight lines
-        else:
-            continue
+        # Count diagonal lines
+        elif abs(x2 - x1) == abs(y2 - y1):
+            iterations = abs(x2 - x1)+1
+            x_ptr = x1
+            y_ptr = y1
+
+            for i in range(iterations):
+                coords = tuple([x_ptr, y_ptr])
+                overlap_dict[coords] += 1
+
+                if x1 < x2:
+                    x_ptr += 1
+                else:
+                    x_ptr -= 1
+                if y1 < y2:
+                    y_ptr += 1
+                else:
+                    y_ptr -= 1
 
     return overlap_dict
 
