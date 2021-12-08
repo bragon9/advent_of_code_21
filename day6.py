@@ -1,3 +1,4 @@
+from collections import deque
 from typing import List
 
 REPRODUCTIVE_CYCLE_LENGTH = 6
@@ -73,8 +74,26 @@ def initialize_school(INPUT: List[str]) -> School:
 
     return school
 
+def more_efficient_but_not_as_fun(INPUT: List[str], cycles: int) -> int:
+    # i = step of reproductive cycle, arr[i] = how many fish
+    reproductive_cycle_array = deque([0 for _ in \
+        range(REPRODUCTIVE_CYCLE_LENGTH+CYCLES_TO_SEXUAL_MATURITY+1)])
+
+    starting_fish = [int(x) for x in INPUT[0].split(',')]
+
+    for fish in starting_fish:
+        reproductive_cycle_array[fish] += 1
+
+    for _ in range(cycles):
+        proud_parents = reproductive_cycle_array.popleft()
+
+        new_babies = proud_parents
+
+        reproductive_cycle_array[REPRODUCTIVE_CYCLE_LENGTH] += proud_parents
+        reproductive_cycle_array.append(new_babies)
+
+    print(f'{sum(reproductive_cycle_array)} fish exist.')
+
 if __name__ == '__main__':
     INPUT = get_input('./inputs/day6.txt')
-    school = initialize_school(INPUT)
-    school.cycle(80)
-    print(school)
+    more_efficient_but_not_as_fun(INPUT, 256)
